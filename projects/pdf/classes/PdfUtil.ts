@@ -49,8 +49,20 @@ export function parseFontName(raw: string) {
     result.fontFamily = result.fontFamily.replace(/-bold$/i, '')
     result.fontWeight = 'bold'
   }
+  if (/-extrabold$/i.test(result.fontFamily)) {
+    result.fontFamily = result.fontFamily.replace(/-extrabold$/i, '')
+    result.fontWeight = 'bold'
+  }
+  if (/-black$/i.test(result.fontFamily)) {
+    result.fontFamily = result.fontFamily.replace(/-black$/i, '')
+    result.fontWeight = 'bold'
+  }
   if (/-italic$/i.test(result.fontFamily)) {
     result.fontFamily = result.fontFamily.replace(/-italic$/i, '')
+    result.fontStyle = 'italic'
+  }
+  if (/-oblique$/i.test(result.fontFamily)) {
+    result.fontFamily = result.fontFamily.replace(/-oblique$/i, '')
     result.fontStyle = 'italic'
   }
   result.fontFamily = capitalCase(result.fontFamily)

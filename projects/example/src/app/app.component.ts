@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
-import { BoundingBox, NgxPdfService, PdfPage, PdfRenderer, VerbosityLevel } from 'ngx-pdfjs'
+import { BoundingBox, EvaluatorElement, NgxPdfService, PdfPage, PdfRenderer, VerbosityLevel } from 'ngx-pdfjs'
 
 interface PdfImageElement {
   boundingBox: BoundingBox
@@ -23,7 +23,7 @@ interface PdfTextElement {
 })
 export class AppComponent implements OnInit {
   public images?: PdfImageElement[] = []
-  public texts?: PdfTextElement[] = []
+  public texts?: EvaluatorElement[] = []
   public elementCode?: string
 
   private page?: PdfPage
@@ -47,9 +47,7 @@ export class AppComponent implements OnInit {
     })
 
     // Extract Texts
-    this.texts = (await this.page.extractText()).map(({ boundingBox, text, fontFamily, fontStyle, fontWeight, textColor }) => {
-      return { boundingBox, text, fontFamily, fontStyle, fontWeight, textColor } as PdfTextElement
-    })
+    this.texts = await this.page.extractText()
 
     // Draw Canvas
     this.canvas.width = this.page.viewport.width
@@ -87,7 +85,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private drawRect({ boundingBox: { left, top, width, height} }: PdfTextElement, strokeStyle = '#000000', fill = false) {
+  private drawRect({ boundingBox: { left, top, width, height} }: EvaluatorElement, strokeStyle = '#000000', fill = false) {
     const { context } = this
     context.lineWidth = 1
     context.strokeStyle = strokeStyle
@@ -98,7 +96,6 @@ export class AppComponent implements OnInit {
       context.fillStyle = '#508cf425'
       context.fill()
     }
-
   }
 
   get canvas() {

@@ -5,7 +5,8 @@
     "entryFile": "public-api.ts",
     "umdModuleIds": {
       "blueimp-md5": "blueimp-md5",
-      "pdfjs-dist": "pdfjs-dist"
+      "pdfjs-dist": "pdfjs-dist",
+      "change-case": "change-case"
     }
   },
   "assets": [
