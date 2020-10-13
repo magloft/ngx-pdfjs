@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   constructor(public pdfjs: NgxPdfService, private sanitizer: DomSanitizer) {}
 
   async ngOnInit() {
-    const document = await this.pdfjs.load('Article', { url: 'http://localhost:4200/assets/article-2.pdf', verbosity: VerbosityLevel.INFOS, fontExtraProperties: true })
+    const document = await this.pdfjs.load('Article', { url: 'http://localhost:4200/assets/article-1.pdf', verbosity: VerbosityLevel.INFOS, fontExtraProperties: true })
     await document.process()
     this.page = document.getPage(1)
     const renderer = new PdfRenderer()
