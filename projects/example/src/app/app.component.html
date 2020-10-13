@@ -1,0 +1,26 @@
+<div class="layout">
+  <div class="column">
+    <div class="container">
+      <h3>Page Preview:</h3>
+      <div class="canvas-container">
+        <canvas #canvas></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div *ngIf="texts.length > 0" class="container">
+      <h3>Extracted Text:</h3>
+      <div class="text-content">
+        <span *ngFor="let text of texts" (mouseenter)="onEnterText(text)" (mouseleave)="onLeaveText(text)" [innerHtml]="text.text" [style.fontFamily]="text.fontFamily" [style.fontWeight]="text.fontWeight" [style.fontStyle]="text.fontStyle" [style.color]="text.textColor"></span>
+      </div>
+      <h3>Elements:</h3>
+      <code #code [innerHtml]="elementCode"></code>
+    </div>
+    <div *ngIf="images.length > 0" class="container">
+      <h3>Extracted Images:</h3>
+      <div *ngFor="let image of images">
+        <img [src]="image.data">
+      </div>
+    </div>
+  </div>
+</div>
