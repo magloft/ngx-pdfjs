@@ -96,7 +96,7 @@ export class PdfOperatorList {
     }))
   }
 
-  get fingerprint() {
+  get fingerprint(): string {
     return md5(this.serialize())
   }
 
