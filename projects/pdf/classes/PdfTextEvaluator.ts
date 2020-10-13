@@ -11,6 +11,7 @@ export interface EvaluatorElement {
   fontStyle?: string
   fontSize?: number
   boundingBox?: BoundingBox
+  verticalMove?: number
 }
 
 export class PdfTextEvaluator {
@@ -48,6 +49,7 @@ export class PdfTextEvaluator {
       element.fontStyle = this.fontStyle
       element.fontSize = this.fontSize
       element.boundingBox = { left, right, top, bottom, width: right - left, height: bottom - top }
+      element.verticalMove = operator.setTextMatrix ? operator.setTextMatrix[5] : null
       this.leading += width
     } else if ('setFillRGBColor' in operator) {
       this.textColor = operator.setFillRGBColor

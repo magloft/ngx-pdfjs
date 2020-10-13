@@ -49,11 +49,13 @@ export class PdfPage {
       .filter(({ setGState }) => {
         return !setGState || setGState.fillAlpha == null || (setGState.globalCompositeOperation === 'multiply' ? false : setGState.fillAlpha === 1 && setGState.strokeAlpha === 1)
       })
-      .map(({ transform, paintImageXObject, paintJpegXObject }) => ({ transform, paintXObject: paintImageXObject ?? paintJpegXObject } as Pick<Operators, 'paintXObject' | 'transform'>))
-    return Promise.all(items.map(async({ transform, paintXObject }) => {
+      .map(({ transform, paintImageXObject, paintJpegXObject }) => ({ transform, paintXObject: paintImageXObject ?? paintJpegXObject, contentType: paintImageXObject ? "image/png" : "image/jpeg"  } as Pick<Operators, 'paintXObject' | 'transform'> & { contentType: string }))
+
+    return Promise.all(items.map(async({ transform, paintXObject, contentType }) => {
       const boundingBox = this.transformToBoundingBox(transform)
       const data = await this.imageToBlob(paintXObject)
-      return { boundingBox, data }
+      const { objectId } = paintXObject
+      return { boundingBox, data, objectId, contentType }
     }))
   }
 
@@ -111,7 +113,7 @@ export class PdfPage {
   get pageIndex() { return this.proxy._pageIndex }
   get width() { return this.viewport.width }
   get height() { return this.viewport.height }
-  get fingerprint() { return this.operatorList.fingerprint() }
+  get fingerprint() { return this.operatorList.fingerprint }
   get view(): BoundingBox {
     const [left, bottom, right, top] = this.proxy.view
     return { left, right, bottom, top, width: right - left, height: top - bottom }
