@@ -13,7 +13,7 @@ export type SetGStateOperator = {
 }
 export type PaintXObjectOperator = { objectId: string, width: number, height: number }
 export type SetFontOperator = { objectId: string, size: number }
-export type ShowTextOperator = { text: string, width: number }
+export type ShowTextOperator = { text: string, width: number, length: number }
 export type MoveTextOperator = { left: number, bottom: number }
 export type SetLeadingMoveTextOperator = { left: number, bottom: number }
 
@@ -31,6 +31,7 @@ export interface Operators {
   beginText: null
   endText: null
   setTextMatrix: number[]
+  setCharSpacing: number
 }
 
 export function setGState([args]: [string, any][][]): SetGStateOperator {
@@ -62,7 +63,8 @@ export function showText([items]: { unicode: string, width: number }[][]): ShowT
   const valid = items.filter((item) => typeof item !== 'number')
   return {
     text: valid.map(({ unicode }) => unicode).join(''),
-    width: valid.reduce((cur, { width }) => cur + width / 1000, 0)
+    width: valid.reduce((cur, { width }) => cur + width / 1000, 0),
+    length: valid.length
   }
 }
 
@@ -81,4 +83,8 @@ export function moveText([left, bottom]: [number, number]): MoveTextOperator {
 
 export function setLeadingMoveText([left, bottom]: [number, number]): MoveTextOperator {
   return { left, bottom }
+}
+
+export function setCharSpacing([value]: [number]): number {
+  return value
 }

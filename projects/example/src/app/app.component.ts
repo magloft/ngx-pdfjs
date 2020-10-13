@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
-import { BoundingBox, EvaluatorElement, NgxPdfService, PdfPage, PdfRenderer, VerbosityLevel } from 'ngx-pdfjs'
+import { BoundingBox, EvaluatorElement, NgxPdfService, PdfPage } from 'ngx-pdfjs'
 
 interface PdfImageElement {
   boundingBox: BoundingBox
@@ -35,11 +35,15 @@ export class AppComponent implements OnInit {
   constructor(public pdfjs: NgxPdfService, private sanitizer: DomSanitizer) {}
 
   async ngOnInit() {
-    const document = await this.pdfjs.load('Article', { url: 'http://localhost:4200/assets/article-1.pdf', verbosity: VerbosityLevel.INFOS, fontExtraProperties: true })
-    await document.process()
+    const document = await this.pdfjs.loadDocument('http://localhost:4200/assets/article-1.pdf')
     this.page = document.getPage(1)
-    const renderer = new PdfRenderer()
-    const blob = await renderer.renderPage(this.page, {}, true)
+
+    // Debug Operators
+    for (const operator of this.page.extractAll()) {
+      for (const [key, value] of Object.entries(operator)) {
+        console.info(key, value)
+      }
+    }
 
     // Extract Images
     this.images = (await this.page.extractImages()).map(({ boundingBox, data }) => {
@@ -55,7 +59,7 @@ export class AppComponent implements OnInit {
     this.canvas.style.width = `${this.page.viewport.width}px`
     this.image = new Image()
     this.image.onload = () => { this.drawBackground() }
-    this.image.src = URL.createObjectURL(blob)
+    this.image.src = URL.createObjectURL(await this.page.renderBlob())
 
     // Element Code
     this.elementCode = JSON.stringify(this.texts, null, 2)
@@ -76,12 +80,16 @@ export class AppComponent implements OnInit {
     return JSON.stringify(texts, null, 2)
   }
 
+  renderText(value: string) {
+    return (value.trim() === '') ? '&middot;' : value
+  }
+
   private drawBackground() {
     const { context, image, page: { viewport: { width, height }} } = this
     context.clearRect(0, 0, width, height)
     context.drawImage(image, 0, 0, width, height)
     for (const text of this.texts) {
-      this.drawRect(text, 'rgba(0, 0, 0, 0.15)')
+      this.drawRect(text, 'rgba(0, 0, 0, 0.35)')
     }
   }
 

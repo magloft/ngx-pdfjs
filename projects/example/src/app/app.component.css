@@ -49,6 +49,10 @@ canvas {
   background-color: transparent;
 }
 
+.text-content > span.blank {
+  color: #CCCCCC !important;
+}
+
 .text-content > span:hover {
   border: 1px solid rgba(153, 223, 240, 0.45);
   background-color: #ebf7ff;

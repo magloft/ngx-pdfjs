@@ -24,7 +24,9 @@ export class PdfTextEvaluator {
   private fontSize?: number
 
   private cursor: [number, number] = [0, 0]
-  private leading = 0
+  private leading: [number, number] = [0, 0]
+  private charSpacing = 0
+  private transformScale = 1
 
   constructor(private page: PdfPage) {}
 
@@ -37,9 +39,15 @@ export class PdfTextEvaluator {
   private processOperator(operator: Partial<Operators>) {
     if ('showText' in operator) {
       const [x, y] = this.cursor
-      const height = this.fontSize
-      const width = operator.showText.width * height
-      const [left, bottom, right, top] = this.page.viewport.convertToViewportRectangle([x + this.leading, y, x + width + this.leading, y + height])
+      const scale = this.fontSize * this.transformScale
+      const width = operator.showText.width * scale
+      const spacingOffset = operator.showText.length * this.charSpacing * scale
+      const [left, bottom, right, top] = this.page.viewport.convertToViewportRectangle([
+        x + this.leading[0],
+        y + this.leading[1],
+        x + width + this.leading[0] + spacingOffset,
+        y + scale + this.leading[1]
+      ])
       const element = this.nextElement()
       element.text = operator.showText.text
       element.textColor = this.textColor
@@ -48,7 +56,7 @@ export class PdfTextEvaluator {
       element.fontStyle = this.fontStyle
       element.fontSize = this.fontSize
       element.boundingBox = { left, right, top, bottom, width: right - left, height: bottom - top }
-      this.leading += width
+      this.leading[0] += width
     } else if ('setFillRGBColor' in operator) {
       this.textColor = operator.setFillRGBColor
     } else if ('setFont' in operator) {
@@ -60,16 +68,17 @@ export class PdfTextEvaluator {
       this.fontSize = operator.setFont.size
     } else if ('setTextMatrix' in operator) {
       this.cursor = [operator.setTextMatrix[4], operator.setTextMatrix[5]]
-      this.leading = 0
-      this.fontSize = operator.setTextMatrix[0]
+      this.leading = [0, 0]
+      this.transformScale = operator.setTextMatrix[0]
     } else if ('moveText' in operator) {
-      this.cursor[0] += operator.moveText.left
-      this.cursor[1] += operator.moveText.bottom
-      this.leading = 0
+      this.cursor[0] += operator.moveText.left * this.transformScale
+      this.cursor[1] += operator.moveText.bottom * this.transformScale
+      this.leading = [0, 0]
     } else if ('setLeadingMoveText' in operator) {
-      this.cursor[0] += operator.setLeadingMoveText.left
-      this.cursor[1] += operator.setLeadingMoveText.bottom
-      this.leading = 0
+      this.cursor[1] += this.leading[1]
+      this.leading = [operator.setLeadingMoveText.left * this.transformScale, operator.setLeadingMoveText.bottom * this.transformScale]
+    } else if ('setCharSpacing' in operator) {
+      this.charSpacing = operator.setCharSpacing
     }
   }
 

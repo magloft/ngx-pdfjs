@@ -1,11 +1,12 @@
+import { RenderParameters } from 'pdfjs-dist/types/display/api'
 import { PdfPage } from './PdfPage'
 
 const PDF_RENDER_DEFAULTS = { type: 'image/jpeg', quality: 75 }
 
 export interface PdfRenderOptions {
-  width: number
-  type: string
-  quality: number
+  width?: number
+  type?: string
+  quality?: number
 }
 
 export class PdfRenderer {
@@ -14,13 +15,13 @@ export class PdfRenderer {
 
   constructor() {}
 
-  async renderPage(page: PdfPage, options: Partial<PdfRenderOptions>, preserveObjects = false) {
+  async renderBlob(page: PdfPage, options: PdfRenderOptions = {}) {
     const { width, type, quality } = { ...PDF_RENDER_DEFAULTS, width: page.viewport.width, ...options }
     const scale = width / page.view.width
     const viewport = page.getViewport({ scale })
     this.canvas.height = viewport.height
     this.canvas.width = viewport.width
-    await page.render({ canvasContext: this.context, viewport }, preserveObjects)
+    await page.render({ canvasContext: this.context, viewport })
     return this.toBlob(type, quality)
   }
 

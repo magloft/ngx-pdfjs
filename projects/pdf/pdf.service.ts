@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core'
-import { GlobalWorkerOptions, VerbosityLevel } from 'pdfjs-dist'
-import { PdfLoader } from './classes/PdfLoader'
-
-export { VerbosityLevel }
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist'
+import { DocumentInitParameters, PDFDataRangeTransport, PDFDocumentLoadingTask, TypedArray } from 'pdfjs-dist/types/display/api'
+import { PdfDocument } from './classes/PdfDocument'
 
 @Injectable({ providedIn: 'root' })
 export class NgxPdfService {
@@ -10,8 +9,12 @@ export class NgxPdfService {
     GlobalWorkerOptions.workerSrc = 'assets/pdf.worker.js'
   }
 
-  load(title: string, source: any, scale?: number, onProgress?: (event: ProgressEvent) => void) {
-    const loader = new PdfLoader()
-    return loader.load(title, source, onProgress, scale)
+  async loadDocument(source: string | TypedArray | DocumentInitParameters | PDFDataRangeTransport, scale?: number, onProgress?: (event: ProgressEvent) => void) {
+    const loadingTask: PDFDocumentLoadingTask = getDocument(source)
+    loadingTask.onProgress = onProgress
+    const proxy = await loadingTask.promise
+    const document = new PdfDocument(proxy, scale)
+    await document.process()
+    return document
   }
 }

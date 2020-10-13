@@ -10,8 +10,10 @@ export interface OPSLookup {
 
 const OPS_LOOKUP = Object.entries(OPS).reduce<OPSLookup>((obj: any, [key, value]: any) => { obj[value] = key; return obj }, {})
 
-function makeFilterFn(filter: string | string[] | PdfOperatorFilter): PdfOperatorFilter {
-  if (typeof filter === 'string') {
+function makeFilterFn(filter?: string | string[] | PdfOperatorFilter): PdfOperatorFilter {
+  if (!filter) {
+    return () => true
+  } else if (typeof filter === 'string') {
     return ((operator: PdfOperator) => operator.fn === filter)
   } else if (filter instanceof Array) {
     return ((operator: PdfOperator) => filter.includes(operator.fn))
@@ -35,7 +37,7 @@ export class PdfOperatorList {
     return this.operators.find(makeFilterFn(filter))
   }
 
-  public findAll(filter: string | string[] | PdfOperatorFilter) {
+  public findAll(filter?: string | string[] | PdfOperatorFilter) {
     return this.operators.filter(makeFilterFn(filter))
   }
 
@@ -79,10 +81,10 @@ export class PdfOperatorList {
     return selection
   }
 
-  public selectAll(filter: string | string[] | PdfOperatorFilter, fn: PdfOperatorSelectionFn) {
+  public selectAll(filter?: string | string[] | PdfOperatorFilter, fn?: PdfOperatorSelectionFn) {
     return this.findAll(filter).map((operator) => {
       const selection = this.select(operator)
-      fn(selection)
+      if (fn) { fn(selection) }
       return selection
     })
   }

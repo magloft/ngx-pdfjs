@@ -1,10 +1,12 @@
 import { Util } from 'pdfjs-dist'
 import { GetViewportParameters, PDFPageProxy, RenderParameters } from 'pdfjs-dist/types/display/api'
 import { PageViewport } from 'pdfjs-dist/types/display/display_utils'
+import { PdfDocument } from './PdfDocument'
 import { PdfOperatorFilter } from './PdfOperator'
 import { PdfOperatorList } from './PdfOperatorList'
 import { PdfOperatorSelectionFn } from './PdfOperatorSelection'
 import { Operators, PaintXObjectOperator } from './PdfOperatorTransforms'
+import { PdfRenderOptions } from './PdfRenderer'
 import { PdfTextEvaluator } from './PdfTextEvaluator'
 import { transformImageToArray } from './PdfUtil'
 
@@ -20,7 +22,7 @@ export interface BoundingBox {
 export class PdfPage {
   public viewport: PageViewport
 
-  constructor(private proxy: PDFPageProxy, public operatorList: PdfOperatorList, scale: number) {
+  constructor(public document: PdfDocument, private proxy: PDFPageProxy, public operatorList: PdfOperatorList, scale: number) {
     this.viewport = proxy.getViewport({ scale })
   }
 
@@ -28,18 +30,22 @@ export class PdfPage {
     return this.proxy.getViewport(params)
   }
 
-  async render(params: RenderParameters, preserveObjects = false) {
+  async renderBlob(options: PdfRenderOptions = {}) {
+    return this.document.renderer.renderBlob(this, options)
+  }
+
+  async render(params: RenderParameters) {
     const _objs = this.proxy.objs._objs
     const result = await this.proxy.render(params).promise
-    if (preserveObjects) { this.proxy.objs._objs = _objs }
+    this.proxy.objs._objs = _objs
     return result
   }
 
-  selectAll(filter: string | string[] | PdfOperatorFilter, fn: PdfOperatorSelectionFn) {
+  selectAll(filter?: string | string[] | PdfOperatorFilter, fn?: PdfOperatorSelectionFn) {
     return this.operatorList.selectAll(filter, fn)
   }
 
-  extractAll<T extends object>(filter: string | string[] | PdfOperatorFilter, fn: PdfOperatorSelectionFn): T[] {
+  extractAll<T extends object>(filter?: string | string[] | PdfOperatorFilter, fn?: PdfOperatorSelectionFn): T[] {
     return this.selectAll(filter, fn).map((selection) => selection.extract<T>())
   }
 

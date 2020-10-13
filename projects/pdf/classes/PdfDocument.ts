@@ -1,11 +1,13 @@
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api'
 import { PdfOperatorList } from './PdfOperatorList'
 import { PdfPage } from './PdfPage'
+import { PdfRenderer } from './PdfRenderer'
 
 export class PdfDocument {
   readonly pages: PdfPage[] = []
+  public renderer = new PdfRenderer()
 
-  constructor(public title: string, private proxy: PDFDocumentProxy, private scale?: number) {}
+  constructor(private proxy: PDFDocumentProxy, private scale?: number) {}
 
   async process(onProgress?: (event: ProgressEvent) => void) {
     for (let pageNumber = 1; pageNumber <= this.proxy.numPages; pageNumber += 1) {
@@ -13,7 +15,7 @@ export class PdfDocument {
       const operators = await proxy.getOperatorList()
       const list = new PdfOperatorList(operators)
       const scale = this.scale ?? 1024 / (proxy.view[3] - proxy.view[1])
-      const page = new PdfPage(proxy, list, scale)
+      const page = new PdfPage(this, proxy, list, scale)
       this.pages.push(page)
       if (onProgress) { onProgress(new ProgressEvent('pdf:page', { loaded: pageNumber, total: this.proxy.numPages })) }
     }

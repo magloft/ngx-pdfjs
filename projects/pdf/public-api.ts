@@ -1,7 +1,6 @@
 export * from './pdf.service'
 export * from './pdf.module'
 export * from './classes/PdfDocument'
-export * from './classes/PdfLoader'
 export * from './classes/PdfOperator'
 export * from './classes/PdfOperatorList'
 export * from './classes/PdfOperatorSelection'
