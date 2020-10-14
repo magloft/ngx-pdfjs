@@ -69,3 +69,13 @@ export function parseFontName(raw: string) {
   result.identifier = paramCase(result.fontFamily)
   return result
 }
+
+export function rgbToHex([r, g, b]: number[]) {
+  const hex = [r, g, b].map((value) => value.toString(16).padStart(2, '0'))
+  return `#${hex.join('')}`
+}
+
+export function hexToRgb(hex: string) {
+  const [_, r, g, b] = hex.match(/^#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})$/)
+  return [r, g, b].map((value) => parseInt(value, 16))
+}

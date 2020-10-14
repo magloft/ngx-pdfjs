@@ -1,3 +1,5 @@
+import { rgbToHex } from './PdfUtil'
+
 export type SetGStateOperator = {
   setLineWidth?: number,
   setLineCap?: number,
@@ -68,9 +70,8 @@ export function showText([items]: { unicode: string, width: number }[][]): ShowT
   }
 }
 
-export function setFillRGBColor([r, g, b]: number[]): string {
-  const hex = [r, g, b].map((value) => value.toString(16).padStart(2, '0'))
-  return `#${hex.join('')}`
+export function setFillRGBColor(rgb: number[]): string {
+  return rgbToHex(rgb)
 }
 
 export function setFont([objectId, size]: [string, number]): SetFontOperator {

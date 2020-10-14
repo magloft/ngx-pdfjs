@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
-import { BoundingBox, EvaluatorElement, NgxPdfService, PdfPage } from 'ngx-pdfjs'
+import { BoundingBox, EvaluatorElement, hexToRgb, NgxPdfService, PdfPage, rgbToHex } from 'ngx-pdfjs'
 
 interface PdfImageElement {
   boundingBox: BoundingBox
