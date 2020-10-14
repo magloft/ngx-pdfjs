@@ -54,7 +54,7 @@ export class PdfTextEvaluator {
       element.fontFamily = this.fontFamily
       element.fontWeight = this.fontWeight
       element.fontStyle = this.fontStyle
-      element.fontSize = this.fontSize
+      element.fontSize = scale
       element.boundingBox = { left, right, top, bottom, width: right - left, height: bottom - top }
       this.leading[0] += width
     } else if ('setFillRGBColor' in operator) {
