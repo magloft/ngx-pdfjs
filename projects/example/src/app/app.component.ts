@@ -25,8 +25,6 @@ export class AppComponent implements OnInit {
   public images?: PdfImageElement[] = []
   public texts?: EvaluatorElement[] = []
   public elementCode?: string
-
-  private page?: PdfPage
   private image?: HTMLImageElement
 
   @ViewChild('canvas') canvasRef: ElementRef<HTMLCanvasElement>
@@ -36,30 +34,30 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     const document = await this.pdfjs.loadDocument('http://localhost:4200/assets/article-1.pdf')
-    this.page = document.getPage(1)
+    const page = document.getPage(1)
 
     // Debug Operators
-    for (const operator of this.page.extractAll()) {
+    for (const operator of page.extractAll()) {
       for (const [key, value] of Object.entries(operator)) {
         console.info(key, value)
       }
     }
 
     // Extract Images
-    this.images = (await this.page.extractImages()).map(({ boundingBox, data }) => {
+    this.images = (await page.extractImages()).map(({ boundingBox, data }) => {
       return { boundingBox, data: this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(data)) } as PdfImageElement
     })
 
     // Extract Texts
-    this.texts = await this.page.extractText()
+    this.texts = await page.extractText()
 
     // Draw Canvas
-    this.canvas.width = this.page.viewport.width
-    this.canvas.height = this.page.viewport.height
-    this.canvas.style.width = `${this.page.viewport.width}px`
+    this.canvas.width = page.viewport.width
+    this.canvas.height = page.viewport.height
+    this.canvas.style.width = `${page.viewport.width}px`
     this.image = new Image()
     this.image.onload = () => { this.drawBackground() }
-    this.image.src = URL.createObjectURL(await this.page.renderBlob())
+    this.image.src = URL.createObjectURL(await page.renderBlob())
 
     // Element Code
     this.elementCode = JSON.stringify(this.texts, null, 2)
@@ -71,7 +69,7 @@ export class AppComponent implements OnInit {
     this.elementCode = JSON.stringify(text, null, 2)
   }
 
-  onLeaveText(text: PdfTextElement) {
+  onLeaveText() {
     this.drawBackground()
     this.elementCode = JSON.stringify([this.texts], null, 2)
   }
@@ -85,9 +83,9 @@ export class AppComponent implements OnInit {
   }
 
   private drawBackground() {
-    const { context, image, page: { viewport: { width, height }} } = this
-    context.clearRect(0, 0, width, height)
-    context.drawImage(image, 0, 0, width, height)
+    const { context, image } = this
+    context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    context.drawImage(image, 0, 0, this.canvas.width, this.canvas.height)
     for (const text of this.texts) {
       this.drawRect(text, 'rgba(0, 0, 0, 0.35)')
     }

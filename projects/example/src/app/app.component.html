@@ -11,7 +11,7 @@
     <div *ngIf="texts.length > 0" class="container">
       <h3>Extracted Text:</h3>
       <div class="text-content">
-        <span *ngFor="let text of texts" [class.blank]="text.text.trim() === ''" (mouseenter)="onEnterText(text)" (mouseleave)="onLeaveText(text)" [innerHtml]="renderText(text.text)" [style.fontFamily]="text.fontFamily" [style.fontWeight]="text.fontWeight" [style.fontStyle]="text.fontStyle" [style.color]="text.textColor"></span>
+        <span *ngFor="let text of texts" [class.blank]="text.text.trim() === ''" (mouseenter)="onEnterText(text)" (mouseleave)="onLeaveText()" [innerHtml]="renderText(text.text)" [style.fontFamily]="text.fontFamily" [style.fontWeight]="text.fontWeight" [style.fontStyle]="text.fontStyle" [style.color]="text.textColor"></span>
       </div>
       <h3>Elements:</h3>
       <code #code [innerHtml]="elementCode"></code>
