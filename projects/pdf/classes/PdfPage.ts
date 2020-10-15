@@ -6,7 +6,6 @@ import { PdfOperatorFilter } from './PdfOperator'
 import { PdfOperatorList } from './PdfOperatorList'
 import { PdfOperatorSelectionFn } from './PdfOperatorSelection'
 import { Operators, PaintXObjectOperator } from './PdfOperatorTransforms'
-import { PdfRenderOptions } from './PdfRenderer'
 import { PdfTextEvaluator } from './PdfTextEvaluator'
 import { transformImageToArray } from './PdfUtil'
 
@@ -19,6 +18,14 @@ export interface BoundingBox {
   height: number
 }
 
+export interface PdfRenderOptions {
+  width?: number
+  type?: string
+  quality?: number
+}
+
+const PDF_RENDER_DEFAULTS = { type: 'image/jpeg', quality: 75 }
+
 export class PdfPage {
   public viewport: PageViewport
 
@@ -28,10 +35,6 @@ export class PdfPage {
 
   getViewport(params: GetViewportParameters) {
     return this.proxy.getViewport(params)
-  }
-
-  async renderBlob(options: PdfRenderOptions = {}) {
-    return this.document.renderer.renderBlob(this, options)
   }
 
   async render(params: RenderParameters) {
@@ -110,6 +113,18 @@ export class PdfPage {
     const imageData = new ImageData(data, image.width)
     context.putImageData(imageData, 0, 0)
     return new Promise((resolve) => { canvas.toBlob(resolve, 'image/png', 75) })
+  }
+
+  async renderBlob(options: PdfRenderOptions = {}): Promise<Blob> {
+    const canvas = document.createElement<'canvas'>('canvas')
+    const canvasContext = canvas.getContext('2d')
+    const { width, type, quality } = { ...PDF_RENDER_DEFAULTS, width: this.viewport.width, ...options }
+    const scale = width / this.view.width
+    const viewport = this.getViewport({ scale })
+    canvas.height = viewport.height
+    canvas.width = viewport.width
+    await this.render({ canvasContext, viewport })
+    return new Promise((resolve) => { canvas.toBlob(resolve, type, quality) })
   }
 
   async extractText() {

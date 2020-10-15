@@ -1,11 +1,9 @@
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api'
 import { PdfOperatorList } from './PdfOperatorList'
 import { PdfPage } from './PdfPage'
-import { PdfRenderer } from './PdfRenderer'
 
 export class PdfDocument {
   readonly pages: PdfPage[] = []
-  public renderer = new PdfRenderer()
 
   constructor(private proxy: PDFDocumentProxy, private scale?: number) {}
 
