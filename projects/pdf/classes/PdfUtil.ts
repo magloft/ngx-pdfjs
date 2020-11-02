@@ -41,7 +41,7 @@ export function transformImageToArray(image: PdfImage): Uint8ClampedArray {
 }
 
 export function parseFontName(raw: string) {
-  const result = { raw, identifier: '', fontFamily: raw.split('+')[1], fontWeight: 'regular', fontStyle: 'normal' }
+  const result = { raw, identifier: '', fontFamily: raw.replace(/^.+\+/, ''), fontWeight: 'regular', fontStyle: 'normal' }
   if (/-regular$/i.test(result.fontFamily)) {
     result.fontFamily = result.fontFamily.replace(/-regular$/i, '')
   }
