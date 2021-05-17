@@ -14,7 +14,8 @@
           "options": {
             "tsConfig": "projects/pdf/tsconfig.lib.json",
             "project": "projects/pdf/ng-package.json"
-          }
+          },
+          "configurations": {}
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
@@ -61,18 +62,22 @@
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true
-          }
+          },
+          "configurations": {}
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "example:build"
           },
           "configurations": {
             "production": {
               "browserTarget": "example:build:production"
+            },
+            "development": {
+              "browserTarget": "example:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
