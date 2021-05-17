@@ -1,16 +1,30 @@
 {
   "extends": "tslint:recommended",
   "rules": {
+    "align": {
+      "options": [
+        "parameters",
+        "statements"
+      ]
+    },
     "array-type": false,
-    "deprecation": { "severity": "warning" },
+    "deprecation": {
+      "severity": "warning"
+    },
+    "arrow-return-shorthand": true,
     "semicolon": [true, "never"],
     "component-class-suffix": true,
     "contextual-lifecycle": true,
     "directive-class-suffix": true,
     "directive-selector": [true, "attribute", "ngx", "camelCase"],
     "component-selector": [true, "element", "ngx", "kebab-case"],
-    "import-blacklist": [true, "rxjs/Rx"],
+    "import-blacklist": [
+      true,
+      "rxjs/Rx"
+    ],
+    "eofline": true,
     "interface-name": false,
+    "import-spacing": true,
     "max-classes-per-file": false,
     "max-line-length": [true, 180],
     "member-access": false,
@@ -46,8 +60,36 @@
     "arrow-parens": true,
     "no-irregular-whitespace": true,
     "no-trailing-whitespace": true,
+    "typedef-whitespace": {
+      "options": [
+        {
+          "call-signature": "nospace",
+          "index-signature": "nospace",
+          "parameter": "nospace",
+          "property-declaration": "nospace",
+          "variable-declaration": "nospace"
+        },
+        {
+          "call-signature": "onespace",
+          "index-signature": "onespace",
+          "parameter": "onespace",
+          "property-declaration": "onespace",
+          "variable-declaration": "onespace"
+        }
+      ]
+    },
     "space-within-parens": true,
-    "space-before-function-paren": [true, "never"],
+    "space-before-function-paren": [
+      true,
+      "never"
+    ],
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "check-format",
+        "allow-pascal-case"
+      ]
+    },
     "curly": true
   },
   "rulesDirectory": [
