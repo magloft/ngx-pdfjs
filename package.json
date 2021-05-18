@@ -1,12 +1,13 @@
 {
   "name": "ngx-pdfjs",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "scripts": {
     "ng": "ng",
     "serve": "ng serve",
     "build": "ng build",
     "lint": "ng lint",
-    "link:pdf": "cd dist/pdf; yarn link"
+    "link:pdf": "cd dist/pdf; yarn link",
+    "prepack": " ng build pdf --configuration production"
   },
   "private": true,
   "dependencies": {

@@ -14,6 +14,9 @@
           "options": {
             "tsConfig": "projects/pdf/tsconfig.lib.json",
             "project": "projects/pdf/ng-package.json"
+          },
+          "configurations": {
+            "production": {}
           }
         },
         "lint": {
