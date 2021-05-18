@@ -6,7 +6,8 @@
     "umdModuleIds": {
       "blueimp-md5": "blueimp-md5",
       "pdfjs-dist": "pdfjs-dist",
-      "change-case": "change-case"
+      "change-case": "change-case",
+      "pdf-lib": "pdf-lib"
     }
   },
   "assets": [

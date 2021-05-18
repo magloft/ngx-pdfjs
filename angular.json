@@ -14,18 +14,14 @@
           "options": {
             "tsConfig": "projects/pdf/tsconfig.lib.json",
             "project": "projects/pdf/ng-package.json"
-          },
-          "configurations": {}
+          }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/pdf/tsconfig.lib.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "**/*.js"
+            "lintFilePatterns": [
+              "projects/pdf/**/*.ts",
+              "projects/pdf/**/*.component.html"
             ]
           }
         }
@@ -50,10 +46,18 @@
             "assets": [
               "projects/example/src/favicon.ico",
               "projects/example/src/assets",
-              { "glob": "**/*", "input": "./projects/pdf/assets", "output": "./assets" }
+              {
+                "glob": "**/*",
+                "input": "./projects/pdf/assets",
+                "output": "./assets"
+              }
             ],
             "styles": [
               "projects/example/src/styles.css"
+            ],
+            "allowedCommonJsDependencies": [
+              "pdfjs-dist",
+              "pdf-lib"
             ],
             "scripts": [],
             "vendorChunk": true,
@@ -62,36 +66,30 @@
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true
-          },
-          "configurations": {}
+          }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "browserTarget": "example:build"
           },
           "configurations": {
             "production": {
               "browserTarget": "example:build:production"
-            },
-            "development": {
-              "browserTarget": "example:build:development"
             }
-          },
-          "defaultConfiguration": "development"
+          }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "projects/example/tsconfig.app.json"
-            ],
-            "exclude": [
-              "**/node_modules/**",
-              "**/*.js"
+            "lintFilePatterns": [
+              "projects/example/**/*.ts",
+              "projects/example/**/*.component.html"
             ]
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "pdf"
 }

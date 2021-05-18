@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
-import { BoundingBox, EvaluatorElement, hexToRgb, NgxPdfService, PdfPage, rgbToHex } from 'ngx-pdfjs'
+import { BoundingBox, EvaluatorElement, NgxPdfService } from 'ngx-pdfjs'
 
 interface PdfImageElement {
   boundingBox: BoundingBox
@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
   @ViewChild('canvas') canvasRef: ElementRef<HTMLCanvasElement>
   @ViewChild('code') codeRef: ElementRef<HTMLElement>
 
-  constructor(public pdfjs: NgxPdfService, private sanitizer: DomSanitizer) {}
+  constructor(public pdfjs: NgxPdfService, private sanitizer: DomSanitizer) { }
 
   async ngOnInit() {
     const document = await this.pdfjs.loadDocument('http://localhost:4200/assets/article-1.pdf')
@@ -63,6 +63,12 @@ export class AppComponent implements OnInit {
     this.elementCode = JSON.stringify(this.texts, null, 2)
   }
 
+  async extractPages() {
+    const document = await this.pdfjs.loadDocument('http://localhost:4200/assets/issue.pdf')
+    const newDocument = await this.pdfjs.sliceDocument(document)
+    console.info(`extracted ${newDocument.numPages} pages`)
+  }
+
   onEnterText(text: PdfTextElement) {
     this.drawBackground()
     this.drawRect(text, '#508CF4', true)
@@ -91,7 +97,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private drawRect({ boundingBox: { left, top, width, height} }: EvaluatorElement, strokeStyle = '#000000', fill = false) {
+  private drawRect({ boundingBox: { left, top, width, height } }: EvaluatorElement, strokeStyle = '#000000', fill = false) {
     const { context } = this
     context.lineWidth = 1
     context.strokeStyle = strokeStyle

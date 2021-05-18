@@ -5,7 +5,7 @@ import { PdfPage } from './PdfPage'
 export class PdfDocument {
   readonly pages: PdfPage[] = []
 
-  constructor(private proxy: PDFDocumentProxy, private scale?: number) {}
+  constructor(private proxy: PDFDocumentProxy, private scale?: number) { }
 
   async process(onProgress?: (event: ProgressEvent) => void) {
     for (let pageNumber = 1; pageNumber <= this.proxy.numPages; pageNumber += 1) {
@@ -21,6 +21,7 @@ export class PdfDocument {
 
   getPage(pageNumber: number) { return this.pages[pageNumber - 1] }
   getOutline() { return this.proxy.getOutline() }
+  getData() { return this.proxy.getData() }
 
   get fingerprint() { return this.proxy.fingerprint }
   get numPages() { return this.proxy.numPages }

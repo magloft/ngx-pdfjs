@@ -1,6 +1,14 @@
 <div class="layout">
   <div class="column">
     <div class="container">
+      <h3>Extract Pages:</h3>
+      <div class="text-content">
+        <button (click)="extractPages()">Load PDF</button>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="container">
       <h3>Page Preview:</h3>
       <div class="canvas-container">
         <canvas #canvas></canvas>

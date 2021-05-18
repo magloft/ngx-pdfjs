@@ -1,0 +1,33 @@
+{
+  "root": true,
+  "overrides": [{
+    "files": ["*.ts"],
+    "parserOptions": {
+      "project": ["tsconfig.*?.json"],
+      "createDefaultProgram": true
+    },
+    "extends": ["plugin:@angular-eslint/recommended"],
+    "rules": {
+      "max-len": ["error", { "code": 200 }],
+      "comma-dangle": ["error", "never"],
+      "semi": "off",
+      "arrow-parens": ["error"],
+      "@typescript-eslint/semi": ["error", "never"],
+      "@angular-eslint/directive-selector": ["error", { "type": "attribute", "prefix": [ "app"], "style": "camelCase" }],
+      "@angular-eslint/component-selector": ["error", { "type": "element", "prefix": ["app"], "style": "kebab-case" }],
+      "@angular-eslint/component-class-suffix": ["error", { "suffixes": ["Component", "Page", "Action"] }],
+      "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+      "@typescript-eslint/no-unused-vars": ["error"],
+      "no-restricted-syntax": ["error", {
+        "selector": "CallExpression[callee.object.name=\"console\"][callee.property.name=/^(debug|log|time|timeEnd|trace)$/]",
+        "message": "Unexpected property on console object was called"
+      }]
+    }
+  }, {
+    "files": ["*.component.html"],
+    "extends": ["plugin:@angular-eslint/template/recommended"]
+  }, {
+    "files": ["*.component.ts"],
+    "extends": ["plugin:@angular-eslint/template/process-inline-templates"]
+  }]
+}
