@@ -2,13 +2,7 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "dest": "../../dist/pdf",
   "lib": {
-    "entryFile": "public-api.ts",
-    "umdModuleIds": {
-      "blueimp-md5": "blueimp-md5",
-      "pdfjs-dist": "pdfjs-dist",
-      "change-case": "change-case",
-      "pdf-lib": "pdf-lib"
-    }
+    "entryFile": "public-api.ts"
   },
   "assets": [
     "assets/pdf.worker.js"

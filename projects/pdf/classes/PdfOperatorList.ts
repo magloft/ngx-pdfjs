@@ -1,4 +1,4 @@
-import md5 from 'blueimp-md5'
+import md5 from 'md5'
 import { OPS } from 'pdfjs-dist'
 import { PDFOperatorList } from 'pdfjs-dist/types/display/api'
 import { PdfOperator, PdfOperatorFilter } from './PdfOperator'

@@ -10,7 +10,7 @@
     "module": "es2020",
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES5",
+    "target": "ES2015",
     "noUnusedLocals": false,
     "preserveSymlinks": true,
     "allowJs": true,
@@ -33,7 +33,6 @@
     "strictInjectionParameters": true,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
-    "enableResourceInlining": true,
-    "enableIvy": false
+    "enableResourceInlining": true
   }
 }

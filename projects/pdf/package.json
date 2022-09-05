@@ -1,6 +1,6 @@
 {
   "name": "ngx-pdfjs",
-  "version": "1.0.7",
+  "version": "14.2.0",
   "browser": {
     "fs": false,
     "http": false,
@@ -9,12 +9,12 @@
     "zlib": false
   },
   "dependencies": {
-    "tslib": "^2.2.0"
+    "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/common": "^12.0.0",
-    "@angular/core": "^12.0.0",
-    "blueimp-md5": "^2.18.0",
+    "@angular/common": ">=12.2.0",
+    "@angular/core": "=12.2.0",
+    "md5": "^2.3.0",
     "pdfjs-dist": "2.6.347",
     "change-case": "^4.1.2",
     "pdf-lib": "^1.16.0"

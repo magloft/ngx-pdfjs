@@ -14,9 +14,6 @@
           "options": {
             "tsConfig": "projects/pdf/tsconfig.lib.json",
             "project": "projects/pdf/ng-package.json"
-          },
-          "configurations": {
-            "production": {}
           }
         },
         "lint": {
@@ -55,13 +52,8 @@
                 "output": "./assets"
               }
             ],
-            "styles": [
-              "projects/example/src/styles.css"
-            ],
-            "allowedCommonJsDependencies": [
-              "pdfjs-dist",
-              "pdf-lib"
-            ],
+            "styles": ["projects/example/src/styles.css"],
+            "allowedCommonJsDependencies": ["pdfjs-dist", "pdf-lib", "md5"],
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -94,5 +86,7 @@
       }
     }
   },
-  "defaultProject": "pdf"
+  "cli": {
+    "analytics": false
+  }
 }
