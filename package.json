@@ -1,6 +1,5 @@
 {
-  "name": "ngx-pdfjs",
-  "version": "1.0.7",
+  "name": "@magloft/ngx-pdfjs",
   "scripts": {
     "ng": "ng",
     "serve": "ng serve",

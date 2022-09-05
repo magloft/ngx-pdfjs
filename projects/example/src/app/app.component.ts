@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
-import { BoundingBox, EvaluatorElement, NgxPdfService } from 'ngx-pdfjs'
+import { BoundingBox, EvaluatorElement, NgxPdfService } from '@magloft/ngx-pdfjs'
 
 interface PdfImageElement {
   boundingBox: BoundingBox

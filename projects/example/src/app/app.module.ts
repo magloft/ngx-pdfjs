@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
-import { NgxPdfModule } from 'ngx-pdfjs'
+import { NgxPdfModule } from '@magloft/ngx-pdfjs'
 import { VerbosityLevel } from 'pdfjs-dist'
 import { AppComponent } from './app.component'
 

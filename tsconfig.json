@@ -23,7 +23,7 @@
       "esnext"
     ],
     "paths": {
-      "ngx-pdfjs": [
+      "@magloft/ngx-pdfjs": [
         "projects/pdf/public-api.ts"
       ]
     }
