@@ -12,11 +12,11 @@
     "tslib": "^2.3.0"
   },
   "peerDependencies": {
-    "@angular/common": ">=12.2.0",
-    "@angular/core": "=12.2.0",
+    "@angular/common": ">=14.2.0",
+    "@angular/core": ">=14.2.0",
     "md5": "^2.3.0",
     "pdfjs-dist": "2.6.347",
-    "change-case": "^4.1.2",
+    "change-case": "^4.1.1",
     "pdf-lib": "^1.16.0"
   }
 }
